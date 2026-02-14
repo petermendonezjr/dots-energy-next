@@ -1,0 +1,2887 @@
+================================================================================
+FILE: package.json
+================================================================================
+{
+  "name": "dots-energy-next",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@fontsource-variable/jetbrains-mono": "^5.2.8",
+    "@fontsource/inter": "^5.2.8",
+    "@fontsource/space-grotesk": "^5.2.10",
+    "next": "16.1.6",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "d3-geo": "^3.1.1",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.6",
+    "tailwindcss": "^4",
+    "topojson-client": "^3.1.0",
+    "typescript": "^5"
+  }
+}
+
+================================================================================
+FILE: next.config.ts
+================================================================================
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  output: "export",
+  images: {
+    unoptimized: true,
+  },
+};
+
+export default nextConfig;
+
+================================================================================
+FILE: tsconfig.json
+================================================================================
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".next/dev/types/**/*.ts",
+    "**/*.mts"
+  ],
+  "exclude": ["node_modules"]
+}
+
+================================================================================
+FILE: src/app/globals.css
+================================================================================
+@import "tailwindcss";
+
+/* ============================================
+   SITE A — "Deck/Original" (Dark)
+   ============================================ */
+[data-theme="site-a"] {
+  --bg-primary: #0D0D1A;
+  --bg-secondary: #1A1A2E;
+  --bg-card: #222240;
+  --bg-card-hover: #2A2A50;
+  --text-primary: #F0F0F0;
+  --text-secondary: #A0A0B8;
+  --text-muted: #6B6B80;
+  --accent: #E8751A;
+  --accent-hover: #D06515;
+  --accent-light: rgba(232, 117, 26, 0.15);
+  --accent-subtle: rgba(232, 117, 26, 0.08);
+  --border-color: rgba(232, 117, 26, 0.15);
+  --border-hover: rgba(232, 117, 26, 0.3);
+  --font-heading: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "Inter", system-ui, sans-serif;
+  --globe-atmosphere: #E8751A;
+  --globe-atmosphere-alt: 0.25;
+  --globe-point-color: #E8751A;
+  --globe-arc-color-start: #E8751A;
+  --globe-arc-color-end: #F5A623;
+  --header-bg: rgba(13, 13, 26, 0.95);
+  --popup-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================
+   SITE B — "Infrastructure-Grade Minimalism" (Light)
+   ============================================ */
+[data-theme="site-b"] {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #F8FAFC;
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+  --text-muted: #94A3B8;
+  --accent: #C2713A;
+  --accent-hover: #A85E2F;
+  --accent-light: #F4E8DE;
+  --accent-subtle: #FDF6F0;
+  --border-color: #E2E8F0;
+  --border-hover: #CBD5E1;
+  --font-heading: "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --globe-atmosphere: #94A3B8;
+  --globe-atmosphere-alt: 0.1;
+  --globe-point-color: #C2713A;
+  --globe-arc-color-start: #C2713A;
+  --globe-arc-color-end: #94A3B8;
+  --header-bg: rgba(255, 255, 255, 0.95);
+  --popup-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* ============================================
+   Tailwind Theme Integration
+   ============================================ */
+@theme inline {
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-card: var(--bg-card);
+  --color-bg-card-hover: var(--bg-card-hover);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-light: var(--accent-light);
+  --color-accent-subtle: var(--accent-subtle);
+  --color-border: var(--border-color);
+  --color-border-hover: var(--border-hover);
+  --color-header-bg: var(--header-bg);
+  --font-heading: var(--font-heading);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+}
+
+/* ============================================
+   Base Styles
+   ============================================ */
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+/* ============================================
+   Map Animations
+   ============================================ */
+
+/* Pulse ring for office/cluster markers */
+.map-pulse {
+  animation: map-pulse 2.5s ease-out infinite;
+  transform-origin: center;
+}
+
+@keyframes map-pulse {
+  0% {
+    opacity: 0.6;
+    r: inherit;
+  }
+  70% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Flowing dash animation for connection arcs */
+.arc-flow {
+  animation: arc-flow 3s linear infinite;
+}
+
+@keyframes arc-flow {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+/* ============================================
+   Reduced Motion
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+================================================================================
+FILE: src/app/layout.tsx
+================================================================================
+import type { Metadata } from "next";
+import "@fontsource/inter/400.css";
+import "@fontsource/inter/500.css";
+import "@fontsource/inter/600.css";
+import "@fontsource/inter/700.css";
+import "@fontsource/space-grotesk/500.css";
+import "@fontsource/space-grotesk/700.css";
+import "@fontsource-variable/jetbrains-mono";
+import "./globals.css";
+import { ThemeProvider } from "@/lib/theme-context";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
+
+export const metadata: Metadata = {
+  title: "Dots Energy — Power in Motion\u2122",
+  description:
+    "An infrastructure systems company anchored in battery energy storage. From hardware to network software, from Seoul R&D to U.S. deployment.",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en" data-theme="site-b" suppressHydrationWarning>
+      <body className="antialiased">
+        <ThemeProvider>
+          <Header />
+          <main className="pt-16">{children}</main>
+          <Footer />
+        </ThemeProvider>
+      </body>
+    </html>
+  );
+}
+
+================================================================================
+FILE: src/app/page.tsx
+================================================================================
+import Link from "next/link";
+import { stats } from "@/lib/globe-data";
+
+const pillars = [
+  {
+    name: "PowerPath\u2122",
+    label: "Project Development",
+    description:
+      "From community resilience to grid-scale innovation \u2014 originating, developing, and commissioning energy projects.",
+    href: "/capabilities#powerpath",
+  },
+  {
+    name: "PowerCore\u2122",
+    label: "Energy Hardware",
+    description:
+      "Modular battery and controls platform engineered for flexibility, scalability, and intelligent integration.",
+    href: "/capabilities#powercore",
+  },
+  {
+    name: "PowerOps\u2122",
+    label: "Field Services",
+    description:
+      "From commissioning to optimized performance \u2014 keeping the network in motion across 20+ active sites.",
+    href: "/capabilities#powerops",
+  },
+  {
+    name: "NodeX\u2122",
+    label: "Energy Software",
+    description:
+      "From edge to cloud, from physical to digital \u2014 connecting, monitoring, and controlling the network in motion.",
+    href: "/capabilities#nodex",
+  },
+];
+
+const highlights = [
+  { value: "16", label: "Baltimore Sites" },
+  { value: `${stats.baltimoreSolarKW.toLocaleString()} kW`, label: "Solar Deployed" },
+  { value: `${stats.baltimoreBatteryKWh.toLocaleString()} kWh`, label: "Battery Storage" },
+  { value: "6+ GWh", label: "O&M Under Contract" },
+  { value: "20+", label: "Active Sites" },
+];
+
+export default function Home() {
+  return (
+    <div>
+      {/* Hero */}
+      <section className="min-h-[85vh] flex flex-col items-center justify-center px-6 text-center bg-bg-primary">
+        <div className="flex items-center gap-2 mb-6">
+          <span className="block w-4 h-4 rounded-full bg-text-primary" />
+          <span className="block w-4 h-4 rounded-full bg-text-muted" />
+          <span className="block w-4 h-4 rounded-full bg-accent" />
+        </div>
+        <p className="text-sm font-mono tracking-widest uppercase text-text-muted mb-4">
+          Power in Motion\u2122
+        </p>
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-text-primary mb-6 max-w-3xl">
+          Turning static infrastructure into a living energy network
+        </h1>
+        <p className="text-lg text-text-secondary max-w-xl mb-10 leading-relaxed">
+          An infrastructure systems company anchored in battery energy storage.
+          Developing in Korea. Scaling in America.
+        </p>
+        <div className="flex gap-4 flex-wrap justify-center">
+          <Link
+            href="/connect"
+            className="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium rounded-md bg-accent text-white hover:bg-accent-hover transition-colors"
+          >
+            Connect with Us
+          </Link>
+          <Link
+            href="/capabilities"
+            className="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium rounded-md border border-border text-text-secondary hover:text-text-primary hover:border-border-hover transition-colors"
+          >
+            Explore Capabilities
+          </Link>
+        </div>
+      </section>
+
+      {/* Four Pillars */}
+      <section className="py-24 px-6 bg-bg-secondary">
+        <div className="max-w-6xl mx-auto">
+          <p className="text-xs font-mono tracking-widest uppercase text-text-muted mb-3 text-center">
+            The Ecosystem
+          </p>
+          <h2 className="text-3xl font-bold text-text-primary text-center mb-4">
+            Four pillars. One network.
+          </h2>
+          <p className="text-text-secondary text-center max-w-xl mx-auto mb-16">
+            Each pillar strengthens the others \u2014 from project origination to
+            hardware, field operations, and intelligent software.
+          </p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {pillars.map((p) => (
+              <Link
+                key={p.name}
+                href={p.href}
+                className="group p-6 border border-border rounded-lg hover:border-border-hover transition-colors bg-bg-card"
+              >
+                <p className="text-xs font-mono tracking-wider uppercase text-accent mb-2">
+                  {p.name}
+                </p>
+                <h3 className="text-lg font-semibold text-text-primary mb-2">
+                  {p.label}
+                </h3>
+                <p className="text-sm text-text-secondary leading-relaxed">
+                  {p.description}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Highlights / Stats Bar */}
+      <section className="py-16 px-6 bg-bg-primary border-y border-border">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 text-center">
+            {highlights.map((h) => (
+              <div key={h.label}>
+                <div className="text-3xl font-bold text-accent mb-1">
+                  {h.value}
+                </div>
+                <div className="text-xs text-text-muted uppercase tracking-wider">
+                  {h.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Global Footprint Teaser */}
+      <section className="py-24 px-6 bg-bg-secondary">
+        <div className="max-w-4xl mx-auto text-center">
+          <p className="text-xs font-mono tracking-widest uppercase text-text-muted mb-3">
+            Global Presence
+          </p>
+          <h2 className="text-3xl font-bold text-text-primary mb-4">
+            Connected across continents
+          </h2>
+          <p className="text-text-secondary max-w-xl mx-auto mb-10">
+            R&D in Seoul. Operations across the United States. Explore our
+            battery storage projects, community microgrids, and field service
+            footprint.
+          </p>
+          <Link
+            href="/assets"
+            className="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium rounded-md bg-accent text-white hover:bg-accent-hover transition-colors"
+          >
+            View Global Assets
+            <span aria-hidden="true">&rarr;</span>
+          </Link>
+        </div>
+      </section>
+
+      {/* CTA Band */}
+      <section className="py-20 px-6 bg-bg-primary border-t border-border text-center">
+        <h2 className="text-2xl font-bold text-text-primary mb-4">
+          Ready to connect?
+        </h2>
+        <p className="text-text-secondary mb-8 max-w-md mx-auto">
+          Whether you are a utility, developer, or community partner \u2014 we would
+          like to hear from you.
+        </p>
+        <Link
+          href="/connect"
+          className="inline-flex items-center px-6 py-3 text-sm font-medium rounded-md bg-text-primary text-bg-primary hover:opacity-90 transition-opacity"
+        >
+          Get in Touch
+        </Link>
+      </section>
+    </div>
+  );
+}
+
+================================================================================
+FILE: src/app/about/page.tsx
+================================================================================
+import Link from "next/link";
+
+export default function AboutPage() {
+  return (
+    <div>
+      {/* Hero */}
+      <section className="py-24 px-6 bg-bg-primary">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-xs font-mono tracking-widest uppercase text-text-muted mb-3">
+            About Dots Energy
+          </p>
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-text-primary mb-6">
+            Connected across continents
+          </h1>
+          <p className="text-lg text-text-secondary max-w-2xl leading-relaxed">
+            Leveraging global innovation and U.S. scale to power the next
+            generation of energy systems.
+          </p>
+        </div>
+      </section>
+
+      {/* Two-geography model */}
+      <section className="py-20 px-6 bg-bg-secondary border-t border-border">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-16">
+            {/* Korea */}
+            <div>
+              <p className="text-xs font-mono tracking-wider uppercase text-accent mb-3">
+                Seoul, South Korea
+              </p>
+              <h2 className="text-2xl font-bold text-text-primary mb-4">
+                Design & Prototyping
+              </h2>
+              <p className="text-text-secondary leading-relaxed mb-4">
+                Our Seoul R&D center drives battery energy storage system design,
+                power electronics prototyping, precision manufacturing, and
+                early-stage production. Located in one of the world's leading
+                battery innovation ecosystems.
+              </p>
+              <ul className="space-y-2 text-sm text-text-secondary">
+                <li className="flex items-start gap-2">
+                  <span className="text-accent mt-0.5">&#9679;</span>
+                  BESS system architecture and design
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-accent mt-0.5">&#9679;</span>
+                  Power electronics prototyping
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-accent mt-0.5">&#9679;</span>
+                  Precision manufacturing and quality control
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-accent mt-0.5">&#9679;</span>
+                  Software platform development
+                </li>
+              </ul>
+            </div>
+
+            {/* United States */}
+            <div>
+              <p className="text-xs font-mono tracking-wider uppercase text-accent mb-3">
+                United States
+              </p>
+              <h2 className="text-2xl font-bold text-text-primary mb-4">
+                Deployment & Operations
+              </h2>
+              <p className="text-text-secondary leading-relaxed mb-4">
+                Our U.S. operations span market deployment, system integration,
+                commissioning, field services, and large-scale manufacturing.
+                Active across California, Texas, the Northeast, and the
+                Mid-Atlantic.
+              </p>
+              <ul className="space-y-2 text-sm text-text-secondary">
+                <li className="flex items-start gap-2">
+                  <span className="text-accent mt-0.5">&#9679;</span>
+                  Project development and commissioning
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-accent mt-0.5">&#9679;</span>
+                  Operations & maintenance (6+ GWh under contract)
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-accent mt-0.5">&#9679;</span>
+                  Community microgrid deployment (Baltimore 16-site program)
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-accent mt-0.5">&#9679;</span>
+                  Large-scale production and field services
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Mission */}
+      <section className="py-20 px-6 bg-bg-primary border-t border-border">
+        <div className="max-w-3xl mx-auto text-center">
+          <p className="text-xs font-mono tracking-widest uppercase text-text-muted mb-3">
+            Power in Motion\u2122
+          </p>
+          <h2 className="text-2xl font-bold text-text-primary mb-6">
+            Our mission
+          </h2>
+          <p className="text-text-secondary leading-relaxed text-lg">
+            Dots Energy is redefining how power moves — transforming isolated
+            assets into connected, adaptive systems, turning static infrastructure
+            into a living energy network. Through the Power in Motion ecosystem,
+            energy becomes networked, communities become resilient, and every
+            connection becomes a source of strength.
+          </p>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-20 px-6 bg-bg-secondary border-t border-border text-center">
+        <h2 className="text-2xl font-bold text-text-primary mb-4">
+          Work with us
+        </h2>
+        <p className="text-text-secondary mb-8 max-w-md mx-auto">
+          We partner with utilities, cities, developers, and communities
+          building the next generation of energy infrastructure.
+        </p>
+        <Link
+          href="/connect"
+          className="inline-flex items-center px-6 py-3 text-sm font-medium rounded-md bg-text-primary text-bg-primary hover:opacity-90 transition-opacity"
+        >
+          Connect with Us
+        </Link>
+      </section>
+    </div>
+  );
+}
+
+================================================================================
+FILE: src/app/approach/page.tsx
+================================================================================
+import Link from "next/link";
+
+export default function ApproachPage() {
+  return (
+    <div>
+      {/* Hero */}
+      <section className="py-24 px-6 bg-bg-primary">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-xs font-mono tracking-widest uppercase text-text-muted mb-3">
+            Our Approach
+          </p>
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-text-primary mb-6">
+            An infrastructure systems approach
+          </h1>
+          <p className="text-lg text-text-secondary max-w-2xl leading-relaxed">
+            Most energy companies sell components. We build connected systems.
+            From battery hardware to network software, from project development
+            to field operations — every layer is designed to work together.
+          </p>
+        </div>
+      </section>
+
+      {/* Core Thesis */}
+      <section className="py-20 px-6 bg-bg-secondary border-t border-border">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold text-text-primary mb-6">
+            From components to systems
+          </h2>
+          <div className="grid md:grid-cols-2 gap-12">
+            <div>
+              <p className="text-text-secondary leading-relaxed mb-4">
+                The energy transition is producing an explosion of distributed
+                assets — batteries, solar, EV chargers, mobile power units.
+                Individually, they are components. Connected through a unified
+                architecture, they become an adaptive energy network.
+              </p>
+              <p className="text-text-secondary leading-relaxed">
+                Dots Energy bridges the gap between hardware innovation and
+                system-level intelligence. We design battery systems, deploy them
+                in the field, operate them at scale, and connect them through a
+                cloud-native software platform that transforms isolated assets into
+                a living network.
+              </p>
+            </div>
+            <div className="space-y-6">
+              <div className="p-5 border border-border rounded-lg bg-bg-card">
+                <p className="text-xs font-mono tracking-wider uppercase text-text-muted mb-1">
+                  Component Vendor
+                </p>
+                <p className="text-sm text-text-secondary">
+                  Ships a battery. Integration is your problem.
+                </p>
+              </div>
+              <div className="p-5 border border-border rounded-lg bg-bg-card">
+                <p className="text-xs font-mono tracking-wider uppercase text-text-muted mb-1">
+                  Systems Integrator
+                </p>
+                <p className="text-sm text-text-secondary">
+                  Connects third-party parts. Limited control over the stack.
+                </p>
+              </div>
+              <div className="p-5 border border-accent rounded-lg bg-accent-subtle">
+                <p className="text-xs font-mono tracking-wider uppercase text-accent mb-1">
+                  Dots Energy — Platform Approach
+                </p>
+                <p className="text-sm text-text-primary">
+                  Hardware, software, deployment, and operations — purpose-built
+                  to work as one system.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Design Philosophy */}
+      <section className="py-20 px-6 bg-bg-primary border-t border-border">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold text-text-primary mb-8">
+            Design philosophy
+          </h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="p-6 border border-border rounded-lg">
+              <h3 className="text-lg font-semibold text-text-primary mb-3">
+                Resilient-first
+              </h3>
+              <p className="text-sm text-text-secondary leading-relaxed">
+                Every system is designed to operate independently during grid
+                disruptions. Local intelligence ensures continuity when the
+                cloud is unavailable. Islanding, load prioritization, and
+                autonomous control are built into the architecture — not bolted on.
+              </p>
+            </div>
+            <div className="p-6 border border-border rounded-lg">
+              <h3 className="text-lg font-semibold text-text-primary mb-3">
+                Replication-first
+              </h3>
+              <p className="text-sm text-text-secondary leading-relaxed">
+                Modular hardware and self-describing software mean each new
+                site deploys faster than the last. Standardized configurations,
+                automated provisioning, and repeatable playbooks transform
+                one-off projects into scalable programs.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Global Operating Model */}
+      <section className="py-20 px-6 bg-bg-secondary border-t border-border">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold text-text-primary mb-8">
+            Develop in Korea. Scale in America.
+          </h2>
+          <div className="grid md:grid-cols-2 gap-12">
+            <div>
+              <p className="text-xs font-mono tracking-wider uppercase text-text-muted mb-2">
+                Seoul, South Korea
+              </p>
+              <h3 className="text-lg font-semibold text-text-primary mb-3">
+                R&D Center
+              </h3>
+              <p className="text-sm text-text-secondary leading-relaxed">
+                Battery system design, power electronics prototyping, precision
+                manufacturing, and early-stage production. Leveraging Korea's
+                advanced battery ecosystem and engineering talent.
+              </p>
+            </div>
+            <div>
+              <p className="text-xs font-mono tracking-wider uppercase text-text-muted mb-2">
+                United States
+              </p>
+              <h3 className="text-lg font-semibold text-text-primary mb-3">
+                Operations & Deployment
+              </h3>
+              <p className="text-sm text-text-secondary leading-relaxed">
+                Market deployment, system integration, field services,
+                commissioning, and large-scale manufacturing. Operating across
+                California, Texas, the Northeast, and the Mid-Atlantic.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-20 px-6 bg-bg-primary border-t border-border text-center">
+        <h2 className="text-2xl font-bold text-text-primary mb-4">
+          See what we build
+        </h2>
+        <p className="text-text-secondary mb-8 max-w-md mx-auto">
+          Explore the four pillars of the Power in Motion ecosystem.
+        </p>
+        <Link
+          href="/capabilities"
+          className="inline-flex items-center px-6 py-3 text-sm font-medium rounded-md bg-text-primary text-bg-primary hover:opacity-90 transition-opacity"
+        >
+          View Capabilities
+        </Link>
+      </section>
+    </div>
+  );
+}
+
+================================================================================
+FILE: src/app/capabilities/page.tsx
+================================================================================
+import Link from "next/link";
+
+const products = [
+  { name: "Sodium Plus\u2122 Container", spec: "3 MWh per container", use: "Utility, Industrial & Data Centers" },
+  { name: "Sodium Plus\u2122 Pod", spec: "250 kWh per stackable pod", use: "C&I and small industrial sites" },
+  { name: "Mobile Plus\u2122 Battery", spec: "Second-life EV modules", use: "Mobile & temporary power" },
+  { name: "Pole Plus\u2122 Battery", spec: "Pole-mounted", use: "Utility, telecom, traffic infrastructure" },
+];
+
+export default function CapabilitiesPage() {
+  return (
+    <div>
+      {/* Hero */}
+      <section className="py-24 px-6 bg-bg-primary">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-xs font-mono tracking-widest uppercase text-text-muted mb-3">
+            Capabilities
+          </p>
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-text-primary mb-6">
+            Connecting the dots
+          </h1>
+          <p className="text-lg text-text-secondary max-w-2xl leading-relaxed">
+            Four integrated pillars — from project development to energy hardware,
+            field operations, and intelligent network software.
+          </p>
+        </div>
+      </section>
+
+      {/* PowerPath */}
+      <section id="powerpath" className="py-20 px-6 bg-bg-secondary border-t border-border">
+        <div className="max-w-5xl mx-auto">
+          <p className="text-xs font-mono tracking-wider uppercase text-accent mb-2">
+            PowerPath\u2122
+          </p>
+          <h2 className="text-2xl font-bold text-text-primary mb-3">
+            Project Development
+          </h2>
+          <p className="text-sm text-text-secondary mb-2">
+            Originate &bull; Develop &bull; Commission
+          </p>
+          <p className="text-text-secondary leading-relaxed max-w-3xl mb-8">
+            PowerPath drives the expansion of the Power in Motion ecosystem through
+            strategic project origination, partnerships, and end-to-end development.
+            From community-based microgrids to utility-scale energy storage, we
+            partner with cities, utilities, and private developers to deploy
+            resilient, distributed energy infrastructure.
+          </p>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="p-5 border border-border rounded-lg bg-bg-card">
+              <h3 className="text-sm font-semibold text-text-primary mb-2">
+                Baltimore Community Resilience Hub Program
+              </h3>
+              <p className="text-sm text-text-secondary">
+                16-site microgrid network advancing urban resilience across
+                Baltimore. 1,035 kW solar and 3,500 kWh battery storage
+                contracted for community-serving facilities.
+              </p>
+            </div>
+            <div className="p-5 border border-border rounded-lg bg-bg-card">
+              <h3 className="text-sm font-semibold text-text-primary mb-2">
+                Utility-Scale BESS Pipeline
+              </h3>
+              <p className="text-sm text-text-secondary">
+                Active development pipeline across PJM, CAISO, and ERCOT
+                markets — from 5 MW community-scale to 100 MW grid-scale
+                deployments.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* PowerCore */}
+      <section id="powercore" className="py-20 px-6 bg-bg-primary border-t border-border">
+        <div className="max-w-5xl mx-auto">
+          <p className="text-xs font-mono tracking-wider uppercase text-accent mb-2">
+            PowerCore\u2122
+          </p>
+          <h2 className="text-2xl font-bold text-text-primary mb-3">
+            Energy Hardware
+          </h2>
+          <p className="text-sm text-text-secondary mb-2">
+            Modular &bull; Scalable &bull; Reliable
+          </p>
+          <p className="text-text-secondary leading-relaxed max-w-3xl mb-8">
+            A modular battery and controls platform engineered for flexibility,
+            scalability, and intelligent integration — supporting utility-scale,
+            distributed, and mobile power applications.
+          </p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {products.map((p) => (
+              <div key={p.name} className="p-4 border border-border rounded-lg bg-bg-card">
+                <h3 className="text-sm font-semibold text-text-primary mb-1">
+                  {p.name}
+                </h3>
+                <p className="text-xs text-accent font-mono mb-2">{p.spec}</p>
+                <p className="text-xs text-text-muted">{p.use}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* PowerOps */}
+      <section id="powerops" className="py-20 px-6 bg-bg-secondary border-t border-border">
+        <div className="max-w-5xl mx-auto">
+          <p className="text-xs font-mono tracking-wider uppercase text-accent mb-2">
+            PowerOps\u2122
+          </p>
+          <h2 className="text-2xl font-bold text-text-primary mb-3">
+            Field Services
+          </h2>
+          <p className="text-sm text-text-secondary mb-2">
+            Commission &bull; Operate &bull; Maintain
+          </p>
+          <p className="text-text-secondary leading-relaxed max-w-3xl mb-8">
+            From commissioning to continuous performance, PowerOps keeps the
+            network in motion. An agile, nationwide team delivering field
+            services from California to Massachusetts.
+          </p>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="p-5 border border-border rounded-lg bg-bg-card text-center">
+              <div className="text-2xl font-bold text-accent mb-1">6+ GWh</div>
+              <div className="text-xs text-text-muted uppercase tracking-wider">
+                Contracted O&M
+              </div>
+            </div>
+            <div className="p-5 border border-border rounded-lg bg-bg-card text-center">
+              <div className="text-2xl font-bold text-accent mb-1">20+</div>
+              <div className="text-xs text-text-muted uppercase tracking-wider">
+                Active Sites
+              </div>
+            </div>
+            <div className="p-5 border border-border rounded-lg bg-bg-card text-center">
+              <div className="text-2xl font-bold text-accent mb-1">5 States</div>
+              <div className="text-xs text-text-muted uppercase tracking-wider">
+                CA, AZ, TX, NJ, MA
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* NodeX */}
+      <section id="nodex" className="py-20 px-6 bg-bg-primary border-t border-border">
+        <div className="max-w-5xl mx-auto">
+          <p className="text-xs font-mono tracking-wider uppercase text-accent mb-2">
+            NodeX\u2122
+          </p>
+          <h2 className="text-2xl font-bold text-text-primary mb-3">
+            Energy Software
+          </h2>
+          <p className="text-sm text-text-secondary mb-2">
+            Connect &bull; Monitor &bull; Control
+          </p>
+          <p className="text-text-secondary leading-relaxed max-w-3xl mb-8">
+            A modular, cloud-native platform that connects edge assets to a
+            future-ready data, analytics, and control layer. NodeX transforms
+            distributed power resources into an intelligent, self-configuring
+            network — from edge to cloud, from physical to digital.
+          </p>
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
+            <div className="p-5 border border-border rounded-lg bg-bg-card">
+              <p className="text-xs font-mono tracking-wider uppercase text-accent mb-2">
+                Connect Domain
+              </p>
+              <h3 className="text-sm font-semibold text-text-primary mb-2">
+                Data Integration
+              </h3>
+              <p className="text-xs text-text-secondary leading-relaxed">
+                Unifies data and control across edge, cloud, and enterprise
+                layers. MQTT for real-time telemetry, REST for configuration
+                and integration.
+              </p>
+            </div>
+            <div className="p-5 border border-border rounded-lg bg-bg-card">
+              <p className="text-xs font-mono tracking-wider uppercase text-accent mb-2">
+                Awareness Domain
+              </p>
+              <h3 className="text-sm font-semibold text-text-primary mb-2">
+                Self-Configuration
+              </h3>
+              <p className="text-xs text-text-secondary leading-relaxed">
+                Semantic graph model creates a living representation of the
+                network. Assets self-describe through digital birth
+                certificates, enabling auto-discovery and configuration.
+              </p>
+            </div>
+            <div className="p-5 border border-border rounded-lg bg-bg-card">
+              <p className="text-xs font-mono tracking-wider uppercase text-accent mb-2">
+                Intelligence Domain
+              </p>
+              <h3 className="text-sm font-semibold text-text-primary mb-2">
+                Self-Optimization
+              </h3>
+              <p className="text-xs text-text-secondary leading-relaxed">
+                Predictive analytics, scenario simulation, and autonomous
+                dispatch. Continuously learning from system feedback to
+                optimize energy flow, cost, and reliability.
+              </p>
+            </div>
+          </div>
+          <p className="text-sm text-text-muted">
+            NodeX Phase 1 MVP is in development, targeting 15-20 pilot sites in 2026.
+          </p>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-20 px-6 bg-bg-secondary border-t border-border text-center">
+        <h2 className="text-2xl font-bold text-text-primary mb-4">
+          See it in action
+        </h2>
+        <p className="text-text-secondary mb-8 max-w-md mx-auto">
+          Explore our global footprint or get in touch to discuss a project.
+        </p>
+        <div className="flex gap-4 flex-wrap justify-center">
+          <Link
+            href="/assets"
+            className="inline-flex items-center px-6 py-3 text-sm font-medium rounded-md bg-accent text-white hover:bg-accent-hover transition-colors"
+          >
+            View Global Assets
+          </Link>
+          <Link
+            href="/connect"
+            className="inline-flex items-center px-6 py-3 text-sm font-medium rounded-md bg-text-primary text-bg-primary hover:opacity-90 transition-opacity"
+          >
+            Connect
+          </Link>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+================================================================================
+FILE: src/app/assets/page.tsx
+================================================================================
+import type { Metadata } from "next";
+import { Globe } from "@/components/globe/Globe";
+import { AssetList } from "@/components/globe/AssetList";
+import { allLocations } from "@/lib/globe-data";
+import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Global Footprint — Dots Energy",
+  description:
+    "Explore Dots Energy global operations. R&D in South Korea, battery storage deployment across the United States.",
+};
+
+// JSON-LD structured data for locations
+function StructuredData() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Dots Energy",
+    description:
+      "An infrastructure systems company anchored in battery energy storage.",
+    location: allLocations.map((loc) => ({
+      "@type": "Place",
+      name: loc.name,
+      description: loc.description,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: loc.city,
+        ...(loc.state && { addressRegion: loc.state }),
+        addressCountry: loc.country,
+      },
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: loc.lat,
+        longitude: loc.lng,
+      },
+    })),
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}
+
+export default function AssetsPage() {
+  return (
+    <>
+      <StructuredData />
+
+      {/* Page Hero */}
+      <section className="pt-16 pb-8 px-6">
+        <div className="max-w-5xl mx-auto text-center">
+          <span className="inline-block text-xs font-mono text-accent uppercase tracking-widest mb-3">
+            // global footprint
+          </span>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-text-primary mb-4">
+            Connected Across Continents
+          </h1>
+          <p className="text-base sm:text-lg text-text-secondary max-w-2xl mx-auto">
+            R&D in South Korea. Deployment across the United States. Explore our
+            growing network of battery energy storage projects and operations.
+          </p>
+        </div>
+      </section>
+
+      {/* Globe */}
+      <section className="py-8 px-6">
+        <div className="max-w-5xl mx-auto">
+          <Globe />
+        </div>
+      </section>
+
+      {/* Asset List */}
+      <section className="py-16">
+        <AssetList />
+      </section>
+
+      {/* CTA Band */}
+      <section className="bg-text-primary py-16 px-6">
+        <div className="max-w-2xl mx-auto text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-bg-primary mb-4">
+            Ready to build resilient energy infrastructure?
+          </h2>
+          <p className="text-bg-secondary/70 mb-6">
+            From community resilience to utility-scale storage — let&apos;s
+            start a conversation about your energy needs.
+          </p>
+          <Link
+            href="/connect"
+            className="inline-flex items-center px-6 py-3 text-sm font-medium rounded-md bg-bg-primary text-text-primary hover:opacity-90 transition-opacity"
+          >
+            Start a Conversation
+          </Link>
+        </div>
+      </section>
+    </>
+  );
+}
+
+================================================================================
+FILE: src/app/connect/page.tsx
+================================================================================
+"use client";
+
+import { useState } from "react";
+
+export default function ConnectPage() {
+  const [submitted, setSubmitted] = useState(false);
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    // TODO: integrate Brevo email capture
+    setSubmitted(true);
+  }
+
+  return (
+    <div>
+      {/* Hero */}
+      <section className="py-24 px-6 bg-bg-primary">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-xs font-mono tracking-widest uppercase text-text-muted mb-3">
+            Get in Touch
+          </p>
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-text-primary mb-6">
+            Connect with us
+          </h1>
+          <p className="text-lg text-text-secondary max-w-2xl leading-relaxed">
+            Whether you are a utility partner, project developer, community
+            organization, or just curious about what we do — we would like to
+            hear from you.
+          </p>
+        </div>
+      </section>
+
+      {/* Form */}
+      <section className="py-20 px-6 bg-bg-secondary border-t border-border">
+        <div className="max-w-xl mx-auto">
+          {submitted ? (
+            <div className="text-center py-12">
+              <div className="text-2xl font-bold text-text-primary mb-4">
+                Thank you
+              </div>
+              <p className="text-text-secondary">
+                We received your message and will be in touch shortly.
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2"
+                >
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                  className="w-full px-4 py-3 text-sm rounded-md border border-border bg-bg-card text-text-primary focus:outline-none focus:border-accent transition-colors"
+                  placeholder="Your name"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2"
+                >
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  className="w-full px-4 py-3 text-sm rounded-md border border-border bg-bg-card text-text-primary focus:outline-none focus:border-accent transition-colors"
+                  placeholder="you@company.com"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="company"
+                  className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2"
+                >
+                  Company
+                </label>
+                <input
+                  type="text"
+                  id="company"
+                  name="company"
+                  className="w-full px-4 py-3 text-sm rounded-md border border-border bg-bg-card text-text-primary focus:outline-none focus:border-accent transition-colors"
+                  placeholder="Company name (optional)"
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="message"
+                  className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2"
+                >
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows={5}
+                  required
+                  className="w-full px-4 py-3 text-sm rounded-md border border-border bg-bg-card text-text-primary focus:outline-none focus:border-accent transition-colors resize-y"
+                  placeholder="How can we help?"
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full py-3 text-sm font-semibold rounded-md bg-accent text-white hover:bg-accent-hover transition-colors"
+              >
+                Send Message
+              </button>
+            </form>
+          )}
+
+          <div className="mt-12 pt-8 border-t border-border">
+            <p className="text-xs text-text-muted uppercase tracking-wider mb-2">
+              General Inquiries
+            </p>
+            <p className="text-sm text-text-secondary">
+              info@dotsenergy.com
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+================================================================================
+FILE: src/components/layout/Header.tsx
+================================================================================
+"use client";
+
+import Link from "next/link";
+import { ThemeSwitcher } from "./ThemeSwitcher";
+
+function DotsLogo() {
+  return (
+    <Link href="/" className="flex items-center gap-2.5">
+      <div className="flex items-center gap-1">
+        <span className="block w-2.5 h-2.5 rounded-full bg-text-primary" />
+        <span className="block w-2.5 h-2.5 rounded-full bg-text-muted" />
+        <span className="block w-2.5 h-2.5 rounded-full bg-accent" />
+      </div>
+      <span className="text-sm font-semibold tracking-tight text-text-primary">
+        Dots Energy
+      </span>
+    </Link>
+  );
+}
+
+const navLinks = [
+  { label: "Approach", href: "/approach" },
+  { label: "Capabilities", href: "/capabilities" },
+  { label: "Assets", href: "/assets" },
+  { label: "About", href: "/about" },
+];
+
+export function Header() {
+  return (
+    <header className="fixed top-0 left-0 right-0 z-50 h-16 backdrop-blur-md bg-header-bg border-b border-border">
+      <div className="max-w-7xl mx-auto h-full px-6 flex items-center justify-between">
+        <DotsLogo />
+
+        <nav className="hidden md:flex items-center gap-8">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="text-sm text-text-secondary hover:text-text-primary transition-colors"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="flex items-center gap-3">
+          <ThemeSwitcher />
+          <Link
+            href="/connect"
+            className="hidden sm:inline-flex items-center px-4 py-2 text-sm font-medium rounded-md bg-text-primary text-bg-primary hover:opacity-90 transition-opacity"
+          >
+            Connect
+          </Link>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+================================================================================
+FILE: src/components/layout/Footer.tsx
+================================================================================
+import Link from "next/link";
+
+export function Footer() {
+  return (
+    <footer className="border-t border-border bg-bg-secondary">
+      <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-1">
+            <span className="block w-2 h-2 rounded-full bg-text-primary" />
+            <span className="block w-2 h-2 rounded-full bg-text-muted" />
+            <span className="block w-2 h-2 rounded-full bg-accent" />
+          </div>
+          <span className="text-xs text-text-muted">
+            &copy; {new Date().getFullYear()} Dots Energy. All rights reserved.
+          </span>
+        </div>
+
+        <div className="flex items-center gap-6">
+          {["Privacy", "Terms", "Careers"].map((label) => (
+            <Link
+              key={label}
+              href={`/${label.toLowerCase()}`}
+              className="text-xs text-text-muted hover:text-text-secondary transition-colors"
+            >
+              {label}
+            </Link>
+          ))}
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+================================================================================
+FILE: src/components/layout/ThemeSwitcher.tsx
+================================================================================
+"use client";
+
+import { useTheme } from "@/lib/theme-context";
+
+export function ThemeSwitcher() {
+  const { theme, setTheme } = useTheme();
+
+  return (
+    <div className="flex items-center gap-1 rounded-md bg-bg-secondary p-0.5 border border-border">
+      <button
+        onClick={() => setTheme("site-a")}
+        className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
+          theme === "site-a"
+            ? "bg-accent text-white"
+            : "text-text-secondary hover:text-text-primary"
+        }`}
+        aria-pressed={theme === "site-a"}
+      >
+        Deck
+      </button>
+      <button
+        onClick={() => setTheme("site-b")}
+        className={`px-3 py-1 text-xs font-medium rounded transition-colors ${
+          theme === "site-b"
+            ? "bg-accent text-white"
+            : "text-text-secondary hover:text-text-primary"
+        }`}
+        aria-pressed={theme === "site-b"}
+      >
+        Minimal
+      </button>
+    </div>
+  );
+}
+
+================================================================================
+FILE: src/components/globe/Globe.tsx
+================================================================================
+"use client";
+
+import { useState, useCallback } from "react";
+import { MapView } from "./MapView";
+import { MarkerPopup } from "./MarkerPopup";
+import type { GlobeLocation } from "@/lib/types";
+
+export function Globe() {
+  const [selectedMarker, setSelectedMarker] = useState<GlobeLocation | null>(
+    null
+  );
+
+  const handleMarkerClick = useCallback((location: GlobeLocation) => {
+    setSelectedMarker(location);
+  }, []);
+
+  return (
+    <div
+      className="relative w-full"
+      role="img"
+      aria-label="World map showing Dots Energy operations in South Korea and the United States"
+    >
+      <MapView onMarkerClick={handleMarkerClick} />
+
+      {selectedMarker && (
+        <MarkerPopup
+          location={selectedMarker}
+          onClose={() => setSelectedMarker(null)}
+        />
+      )}
+    </div>
+  );
+}
+
+================================================================================
+FILE: src/components/globe/MapView.tsx
+================================================================================
+"use client";
+
+import { useState, useCallback, useMemo, useId } from "react";
+import { WORLD_PATHS, MAP_WIDTH, MAP_HEIGHT, latLngToSvg } from "./world-path";
+import { arcToSvgPaths } from "./arc-utils";
+import { allLocations, arcs, baltimoreSites } from "@/lib/globe-data";
+import type { GlobeLocation } from "@/lib/types";
+
+interface MapViewProps {
+  onMarkerClick?: (location: GlobeLocation) => void;
+}
+
+// Color coding by location type
+const DOT_COLORS = {
+  office: { fill: "#3B82F6", glow: "#3B82F6", label: "Offices" },             // Blue
+  "battery-storage": { fill: "#F59E0B", glow: "#F59E0B", label: "BESS Projects" }, // Amber
+  "community-microgrid": { fill: "#10B981", glow: "#10B981", label: "Community Microgrids" }, // Emerald
+} as const;
+
+// Baltimore cluster — all 16 overlap at world scale
+const BALTIMORE_CENTER = { lat: 39.2904, lng: -76.6122 };
+const nonBaltimoreLocations = allLocations.filter(
+  (loc) => loc.type !== "community-microgrid"
+);
+
+export function MapView({ onMarkerClick }: MapViewProps) {
+  const uid = useId().replace(/:/g, "");
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [showBaltimoreList, setShowBaltimoreList] = useState(false);
+
+  // Scoped SVG def IDs to avoid collisions on client-side nav
+  const ids = {
+    grid: `grid-${uid}`,
+    landGrad: `land-grad-${uid}`,
+    glowBlue: `glow-blue-${uid}`,
+    glowAmber: `glow-amber-${uid}`,
+    glowGreen: `glow-green-${uid}`,
+    arcGrad: `arc-grad-${uid}`,
+  };
+
+  const arcPaths = useMemo(
+    () => arcs.flatMap((arc) => arcToSvgPaths(arc)),
+    []
+  );
+
+  const markers = useMemo(
+    () =>
+      nonBaltimoreLocations.map((loc) => ({
+        ...loc,
+        svg: latLngToSvg(loc.lat, loc.lng),
+      })),
+    []
+  );
+
+  const baltimorePos = useMemo(
+    () => latLngToSvg(BALTIMORE_CENTER.lat, BALTIMORE_CENTER.lng),
+    []
+  );
+
+  const handleMarkerClick = useCallback(
+    (loc: GlobeLocation) => {
+      setShowBaltimoreList(false);
+      onMarkerClick?.(loc);
+    },
+    [onMarkerClick]
+  );
+
+  const handleBaltimoreClusterClick = useCallback(() => {
+    setShowBaltimoreList((prev) => !prev);
+  }, []);
+
+  const handleBaltimoreSelect = useCallback(
+    (loc: GlobeLocation) => {
+      setShowBaltimoreList(false);
+      onMarkerClick?.(loc);
+    },
+    [onMarkerClick]
+  );
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent, action: () => void) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        action();
+      }
+    },
+    []
+  );
+
+  const handleSvgClick = useCallback(
+    (e: React.MouseEvent<SVGSVGElement>) => {
+      const tag = (e.target as SVGElement).tagName;
+      if (tag === "svg" || tag === "rect" || tag === "path") {
+        setShowBaltimoreList(false);
+      }
+    },
+    []
+  );
+
+  const getMarkerSize = (type: string) => {
+    switch (type) {
+      case "office":
+        return { r: 7, glow: 15, pulse: 12 };
+      case "battery-storage":
+        return { r: 5.5, glow: 12, pulse: 0 };
+      default:
+        return { r: 4.5, glow: 10, pulse: 0 };
+    }
+  };
+
+  // Legend items
+  const legendItems = [
+    { color: DOT_COLORS.office.fill, label: DOT_COLORS.office.label, count: 2 },
+    { color: DOT_COLORS["battery-storage"].fill, label: DOT_COLORS["battery-storage"].label, count: 7 },
+    { color: DOT_COLORS["community-microgrid"].fill, label: DOT_COLORS["community-microgrid"].label, count: 16 },
+  ];
+
+  // Bottom of SVG for legend (inside the SVG)
+  const legendY = MAP_HEIGHT - 30;
+
+  return (
+    <div className="relative w-full max-w-[1000px] mx-auto">
+      <svg
+        viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT + 45}`}
+        className="w-full h-auto rounded-xl border border-border overflow-hidden"
+        role="img"
+        aria-label="World map showing Dots Energy operations across South Korea and the United States"
+        onClick={handleSvgClick}
+      >
+        <defs>
+          {/* Grid pattern */}
+          <pattern id={ids.grid} x="0" y="0" width="25" height="25" patternUnits="userSpaceOnUse">
+            <circle cx="12.5" cy="12.5" r="0.5" style={{ fill: "var(--border-color)" }} opacity="0.25" />
+          </pattern>
+
+          {/* Land gradient */}
+          <linearGradient id={ids.landGrad} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" style={{ stopColor: "var(--accent)" }} stopOpacity="0.08" />
+            <stop offset="100%" style={{ stopColor: "var(--accent)" }} stopOpacity="0.02" />
+          </linearGradient>
+
+          {/* Glow filters per color */}
+          <filter id={ids.glowBlue} x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feFlood floodColor="#3B82F6" floodOpacity="0.6" result="color" />
+            <feComposite in="color" in2="blur" operator="in" result="glow" />
+            <feMerge><feMergeNode in="glow" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+          <filter id={ids.glowAmber} x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feFlood floodColor="#F59E0B" floodOpacity="0.6" result="color" />
+            <feComposite in="color" in2="blur" operator="in" result="glow" />
+            <feMerge><feMergeNode in="glow" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+          <filter id={ids.glowGreen} x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feFlood floodColor="#10B981" floodOpacity="0.6" result="color" />
+            <feComposite in="color" in2="blur" operator="in" result="glow" />
+            <feMerge><feMergeNode in="glow" /><feMergeNode in="SourceGraphic" /></feMerge>
+          </filter>
+
+          {/* Arc gradient */}
+          <linearGradient id={ids.arcGrad} x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" style={{ stopColor: "var(--globe-arc-color-start)" }} />
+            <stop offset="100%" style={{ stopColor: "var(--globe-arc-color-end)" }} />
+          </linearGradient>
+        </defs>
+
+        {/* Ocean */}
+        <rect width={MAP_WIDTH} height={MAP_HEIGHT} style={{ fill: "var(--bg-secondary)" }} />
+        <rect width={MAP_WIDTH} height={MAP_HEIGHT} fill={`url(#${ids.grid})`} />
+
+        {/* Land */}
+        <g>
+          {WORLD_PATHS.map((path, i) => (
+            <g key={i}>
+              <path
+                d={path}
+                style={{ fill: "var(--bg-card)", stroke: "var(--border-color)" }}
+                strokeWidth="0.6"
+                strokeLinejoin="round"
+              />
+              <path d={path} fill={`url(#${ids.landGrad})`} stroke="none" />
+            </g>
+          ))}
+        </g>
+
+        {/* Arcs */}
+        <g>
+          {arcPaths.map((seg) => (
+            <path
+              key={seg.id}
+              d={seg.path}
+              fill="none"
+              stroke={`url(#${ids.arcGrad})`}
+              strokeWidth="1.5"
+              strokeDasharray="8 5"
+              opacity="0.45"
+              className="arc-flow"
+              strokeLinecap="round"
+            />
+          ))}
+        </g>
+
+        {/* Markers */}
+        <g>
+          {markers.map((loc) => {
+            const size = getMarkerSize(loc.type);
+            const colors = DOT_COLORS[loc.type as keyof typeof DOT_COLORS];
+            const isHovered = hoveredId === loc.id;
+            const isOffice = loc.type === "office";
+            const glowFilter = loc.type === "office" ? `url(#${ids.glowBlue})`
+              : loc.type === "battery-storage" ? `url(#${ids.glowAmber})`
+              : `url(#${ids.glowGreen})`;
+
+            return (
+              <g
+                key={loc.id}
+                className="cursor-pointer"
+                onClick={(e) => { e.stopPropagation(); handleMarkerClick(loc); }}
+                onKeyDown={(e) => handleKeyDown(e, () => handleMarkerClick(loc))}
+                onMouseEnter={() => setHoveredId(loc.id)}
+                onMouseLeave={() => setHoveredId(null)}
+                role="button"
+                tabIndex={0}
+                aria-label={`${loc.name}, ${loc.city}${loc.state ? `, ${loc.state}` : ""}`}
+              >
+                {/* Hit area */}
+                <circle cx={loc.svg.x} cy={loc.svg.y} r={16} fill="transparent" />
+
+                {/* Outer glow */}
+                <circle
+                  cx={loc.svg.x}
+                  cy={loc.svg.y}
+                  r={isHovered ? size.glow * 1.4 : size.glow}
+                  fill={colors.glow}
+                  opacity={isHovered ? 0.2 : 0.08}
+                  className="transition-all duration-300"
+                />
+
+                {/* Pulse rings (offices) */}
+                {isOffice && (
+                  <>
+                    <circle
+                      cx={loc.svg.x} cy={loc.svg.y} r={size.pulse}
+                      fill="none" stroke={colors.fill} strokeWidth="1.5"
+                      className="map-pulse"
+                    />
+                    <circle
+                      cx={loc.svg.x} cy={loc.svg.y} r={size.pulse + 6}
+                      fill="none" strokeWidth="0.8"
+                      className="map-pulse"
+                      style={{ stroke: colors.fill, animationDelay: "0.8s" }}
+                    />
+                  </>
+                )}
+
+                {/* Main dot */}
+                <circle
+                  cx={loc.svg.x}
+                  cy={loc.svg.y}
+                  r={isHovered ? size.r * 1.3 : size.r}
+                  fill={colors.fill}
+                  filter={glowFilter}
+                  className="transition-all duration-200"
+                />
+
+                {/* Inner bright spot */}
+                <circle
+                  cx={loc.svg.x} cy={loc.svg.y}
+                  r={size.r * 0.3}
+                  fill="white" opacity={0.7}
+                />
+
+                {/* Hover label */}
+                {isHovered && (
+                  <g>
+                    <rect
+                      x={loc.svg.x - 65} y={loc.svg.y - size.r - 28}
+                      width="130" height="20" rx="4"
+                      style={{ fill: "var(--bg-card)" }}
+                      stroke="var(--border-color)" strokeWidth="0.5" opacity="0.95"
+                    />
+                    <text
+                      x={loc.svg.x} y={loc.svg.y - size.r - 15}
+                      textAnchor="middle" dominantBaseline="middle"
+                      style={{ fill: "var(--text-primary)" }}
+                      fontSize="8" fontWeight="600" fontFamily="var(--font-body)"
+                    >
+                      {loc.name.length > 24 ? loc.name.slice(0, 22) + "…" : loc.name}
+                    </text>
+                  </g>
+                )}
+              </g>
+            );
+          })}
+
+          {/* Baltimore cluster */}
+          <g
+            className="cursor-pointer"
+            onClick={(e) => { e.stopPropagation(); handleBaltimoreClusterClick(); }}
+            onKeyDown={(e) => handleKeyDown(e, handleBaltimoreClusterClick)}
+            onMouseEnter={() => setHoveredId("baltimore-cluster")}
+            onMouseLeave={() => setHoveredId(null)}
+            role="button"
+            tabIndex={0}
+            aria-label={`Baltimore Community Resilience Hubs — ${baltimoreSites.length} sites`}
+          >
+            <circle cx={baltimorePos.x} cy={baltimorePos.y} r={20} fill="transparent" />
+
+            {/* Glow */}
+            <circle
+              cx={baltimorePos.x} cy={baltimorePos.y}
+              r={hoveredId === "baltimore-cluster" ? 22 : 18}
+              fill={DOT_COLORS["community-microgrid"].glow}
+              opacity={hoveredId === "baltimore-cluster" ? 0.25 : 0.1}
+              className="transition-all duration-300"
+            />
+
+            {/* Pulse rings */}
+            <circle
+              cx={baltimorePos.x} cy={baltimorePos.y} r={16}
+              fill="none" stroke={DOT_COLORS["community-microgrid"].fill}
+              strokeWidth="1.5" className="map-pulse"
+            />
+            <circle
+              cx={baltimorePos.x} cy={baltimorePos.y} r={22}
+              fill="none" strokeWidth="0.8" className="map-pulse"
+              style={{ stroke: DOT_COLORS["community-microgrid"].fill, animationDelay: "0.8s" }}
+            />
+
+            {/* Main dot */}
+            <circle
+              cx={baltimorePos.x} cy={baltimorePos.y}
+              r={hoveredId === "baltimore-cluster" ? 11 : 9}
+              fill={DOT_COLORS["community-microgrid"].fill}
+              filter={`url(#${ids.glowGreen})`}
+              className="transition-all duration-200"
+            />
+
+            {/* Count */}
+            <text
+              x={baltimorePos.x} y={baltimorePos.y + 0.5}
+              textAnchor="middle" dominantBaseline="middle"
+              fill="white" fontSize="7.5" fontWeight="700"
+              fontFamily="var(--font-mono)"
+            >
+              {baltimoreSites.length}
+            </text>
+
+            {/* Hover label */}
+            {hoveredId === "baltimore-cluster" && (
+              <g>
+                <rect
+                  x={baltimorePos.x - 80} y={baltimorePos.y - 36}
+                  width="160" height="20" rx="4"
+                  style={{ fill: "var(--bg-card)" }}
+                  stroke="var(--border-color)" strokeWidth="0.5" opacity="0.95"
+                />
+                <text
+                  x={baltimorePos.x} y={baltimorePos.y - 23}
+                  textAnchor="middle" dominantBaseline="middle"
+                  style={{ fill: "var(--text-primary)" }}
+                  fontSize="8" fontWeight="600" fontFamily="var(--font-body)"
+                >
+                  Baltimore — {baltimoreSites.length} Resilience Hubs
+                </text>
+              </g>
+            )}
+          </g>
+        </g>
+
+        {/* ═══════════ LEGEND ═══════════ */}
+        <g transform={`translate(0, ${MAP_HEIGHT})`}>
+          {/* Legend background */}
+          <rect x="0" y="0" width={MAP_WIDTH} height="45" style={{ fill: "var(--bg-primary)" }} />
+          <line x1="0" y1="0" x2={MAP_WIDTH} y2="0" style={{ stroke: "var(--border-color)" }} strokeWidth="1" />
+
+          {/* Legend items — centered */}
+          {legendItems.map((item, i) => {
+            const spacing = 280;
+            const totalWidth = legendItems.length * spacing;
+            const startX = (MAP_WIDTH - totalWidth) / 2 + spacing / 2;
+            const cx = startX + i * spacing;
+
+            return (
+              <g key={item.label} transform={`translate(${cx}, 22)`}>
+                {/* Color dot */}
+                <circle cx={-45} cy={0} r={5} fill={item.color} />
+                <circle cx={-45} cy={0} r={2} fill="white" opacity={0.5} />
+
+                {/* Label */}
+                <text
+                  x={-33} y={0}
+                  dominantBaseline="middle"
+                  style={{ fill: "var(--text-secondary)" }}
+                  fontSize="10" fontWeight="500"
+                  fontFamily="var(--font-body)"
+                >
+                  {item.label}
+                </text>
+
+                {/* Count badge */}
+                <text
+                  x={-33 + item.label.length * 5.5 + 12} y={0}
+                  dominantBaseline="middle"
+                  style={{ fill: "var(--text-muted)" }}
+                  fontSize="9" fontWeight="600"
+                  fontFamily="var(--font-mono)"
+                >
+                  ({item.count})
+                </text>
+              </g>
+            );
+          })}
+        </g>
+      </svg>
+
+      {/* Baltimore site picker */}
+      {showBaltimoreList && (
+        <div
+          className="absolute z-30 bg-bg-card border border-border rounded-xl max-h-72 overflow-y-auto w-80"
+          style={{
+            left: `${(baltimorePos.x / MAP_WIDTH) * 100}%`,
+            top: `${(baltimorePos.y / (MAP_HEIGHT + 45)) * 100 + 3}%`,
+            transform: "translateX(-50%)",
+            boxShadow: "var(--popup-shadow)",
+          }}
+        >
+          <div className="sticky top-0 bg-bg-card px-4 py-3 border-b border-border rounded-t-xl">
+            <p className="text-sm font-semibold text-text-primary" style={{ fontFamily: "var(--font-heading)" }}>
+              Baltimore Community Resilience Hubs
+            </p>
+            <p className="text-xs text-text-muted mt-0.5">
+              {baltimoreSites.length} sites · Select to view details
+            </p>
+          </div>
+          <ul className="py-1">
+            {baltimoreSites.map((site) => (
+              <li key={site.id}>
+                <button
+                  className="w-full text-left px-4 py-2.5 text-sm hover:bg-bg-card-hover transition-colors flex justify-between items-center gap-3"
+                  onClick={() => handleBaltimoreSelect(site)}
+                >
+                  <span className="font-medium text-text-primary truncate">{site.name}</span>
+                  <span className="text-xs text-text-muted whitespace-nowrap" style={{ fontFamily: "var(--font-mono)" }}>
+                    {site.solarKW}kW · {site.batteryKWh}kWh
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
+================================================================================
+FILE: src/components/globe/MarkerPopup.tsx
+================================================================================
+"use client";
+
+import { useEffect, useRef } from "react";
+import type { GlobeLocation, BatteryProject, OfficeLocation, CommunityMicrogrid } from "@/lib/types";
+
+interface MarkerPopupProps {
+  location: GlobeLocation;
+  onClose: () => void;
+}
+
+function StatusBadge({ status }: { status: string }) {
+  const colors: Record<string, string> = {
+    Operational: "bg-green-500/20 text-green-400 [data-theme='site-b']_&:bg-green-100 [data-theme='site-b']_&:text-green-700",
+    "Under Construction": "bg-amber-500/20 text-amber-400",
+    Planned: "bg-blue-500/20 text-blue-400",
+    Contracted: "bg-purple-500/20 text-purple-400",
+  };
+
+  return (
+    <span
+      className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium ${colors[status] ?? ""}`}
+    >
+      <span
+        className={`w-1.5 h-1.5 rounded-full ${
+          status === "Operational"
+            ? "bg-green-500"
+            : status === "Under Construction"
+            ? "bg-amber-500"
+            : "bg-blue-500"
+        }`}
+      />
+      {status}
+    </span>
+  );
+}
+
+function OfficeDetails({ location }: { location: OfficeLocation }) {
+  return (
+    <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 text-sm">
+      <dt className="text-text-muted font-mono text-xs">Function</dt>
+      <dd className="text-text-primary">{location.function}</dd>
+      <dt className="text-text-muted font-mono text-xs">Focus</dt>
+      <dd className="text-text-secondary text-xs">{location.focus}</dd>
+    </dl>
+  );
+}
+
+function BatteryDetails({ location }: { location: BatteryProject }) {
+  return (
+    <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 text-sm">
+      <dt className="text-text-muted font-mono text-xs">Capacity</dt>
+      <dd className="text-text-primary font-medium">
+        {location.capacityMW} MW / {location.capacityMWh} MWh
+      </dd>
+      <dt className="text-text-muted font-mono text-xs">Market</dt>
+      <dd className="text-text-secondary">{location.market}</dd>
+      {location.commissioned && (
+        <>
+          <dt className="text-text-muted font-mono text-xs">Commissioned</dt>
+          <dd className="text-text-secondary">{location.commissioned}</dd>
+        </>
+      )}
+    </dl>
+  );
+}
+
+function MicrogridDetails({ location }: { location: CommunityMicrogrid }) {
+  return (
+    <dl className="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1.5 text-sm">
+      <dt className="text-text-muted font-mono text-xs">Solar</dt>
+      <dd className="text-text-primary font-medium">
+        {location.solarKW} kW ({location.solarInstallation})
+      </dd>
+      <dt className="text-text-muted font-mono text-xs">Battery</dt>
+      <dd className="text-text-primary font-medium">
+        {location.batteryKWh} kWh
+      </dd>
+      <dt className="text-text-muted font-mono text-xs">Program</dt>
+      <dd className="text-text-secondary">{location.program}</dd>
+    </dl>
+  );
+}
+
+export function MarkerPopup({ location, onClose }: MarkerPopupProps) {
+  const popupRef = useRef<HTMLDivElement>(null);
+
+  // Close on Escape
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
+  // Close on click outside
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (popupRef.current && !popupRef.current.contains(e.target as Node)) {
+        onClose();
+      }
+    };
+    // Delay to avoid the click that opened this popup from also closing it
+    const timer = setTimeout(() => {
+      window.addEventListener("click", handleClick);
+    }, 100);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("click", handleClick);
+    };
+  }, [onClose]);
+
+  const cityDisplay = location.state
+    ? `${location.city}, ${location.state}`
+    : `${location.city}, ${location.country}`;
+
+  return (
+    <div
+      ref={popupRef}
+      className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 w-[320px] max-w-[90vw] bg-bg-card border border-border rounded-lg overflow-hidden"
+      style={{ boxShadow: "var(--popup-shadow)" }}
+      role="dialog"
+      aria-label={`Details for ${location.name}`}
+    >
+      {/* Header */}
+      <div className="px-4 pt-4 pb-3 border-b border-border">
+        <div className="flex items-start justify-between gap-2">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span
+                className={`w-2 h-2 rounded-full ${
+                  location.type === "office" ? "bg-accent" : "bg-accent"
+                }`}
+              />
+              <span className="text-xs font-mono text-text-muted uppercase tracking-wider">
+                {location.type === "office"
+                  ? "Office"
+                  : location.type === "community-microgrid"
+                  ? "Community Microgrid"
+                  : "BESS Project"}
+              </span>
+            </div>
+            <h3 className="text-sm font-semibold text-text-primary">
+              {location.name}
+            </h3>
+            <p className="text-xs text-text-secondary">{cityDisplay}</p>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-1 text-text-muted hover:text-text-primary transition-colors rounded"
+            aria-label="Close popup"
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 14 14"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M1 1l12 12M13 1L1 13" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Body */}
+      <div className="px-4 py-3">
+        <div className="flex items-center gap-2 mb-3">
+          <StatusBadge status={location.status} />
+        </div>
+
+        {location.type === "office" ? (
+          <OfficeDetails location={location} />
+        ) : location.type === "community-microgrid" ? (
+          <MicrogridDetails location={location} />
+        ) : (
+          <BatteryDetails location={location} />
+        )}
+
+        <p className="mt-3 text-xs text-text-muted leading-relaxed">
+          {location.description}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+================================================================================
+FILE: src/components/globe/AssetList.tsx
+================================================================================
+import { allLocations, stats } from "@/lib/globe-data";
+import type { GlobeLocation, BatteryProject, OfficeLocation, CommunityMicrogrid } from "@/lib/types";
+
+function LocationCard({ location }: { location: GlobeLocation }) {
+  const cityDisplay = location.state
+    ? `${location.city}, ${location.state}, ${location.country}`
+    : `${location.city}, ${location.country}`;
+
+  return (
+    <article className="p-4 bg-bg-card border border-border rounded-lg hover:bg-bg-card-hover transition-colors">
+      <div className="flex items-start justify-between gap-3 mb-2">
+        <div>
+          <h3 className="text-sm font-semibold text-text-primary">
+            {location.name}
+          </h3>
+          <p className="text-xs text-text-secondary">{cityDisplay}</p>
+        </div>
+        <span
+          className={`shrink-0 px-2 py-0.5 text-xs font-medium rounded-full ${
+            location.status === "Operational"
+              ? "bg-green-500/10 text-green-600"
+              : location.status === "Under Construction"
+              ? "bg-amber-500/10 text-amber-600"
+              : location.status === "Contracted"
+              ? "bg-purple-500/10 text-purple-600"
+              : "bg-blue-500/10 text-blue-600"
+          }`}
+        >
+          {location.status}
+        </span>
+      </div>
+
+      <dl className="text-xs space-y-1">
+        <div className="flex gap-2">
+          <dt className="text-text-muted font-mono">Type</dt>
+          <dd className="text-text-secondary">
+            {location.type === "office"
+              ? "Office"
+              : location.type === "community-microgrid"
+              ? "Community Microgrid"
+              : "Battery Storage"}
+          </dd>
+        </div>
+        {location.type === "battery-storage" && (
+          <div className="flex gap-2">
+            <dt className="text-text-muted font-mono">Capacity</dt>
+            <dd className="text-text-secondary">
+              {(location as BatteryProject).capacityMW} MW /{" "}
+              {(location as BatteryProject).capacityMWh} MWh
+            </dd>
+          </div>
+        )}
+        {location.type === "battery-storage" && (
+          <div className="flex gap-2">
+            <dt className="text-text-muted font-mono">Market</dt>
+            <dd className="text-text-secondary">
+              {(location as BatteryProject).market}
+            </dd>
+          </div>
+        )}
+        {location.type === "community-microgrid" && (
+          <div className="flex gap-2">
+            <dt className="text-text-muted font-mono">Solar / Battery</dt>
+            <dd className="text-text-secondary">
+              {(location as CommunityMicrogrid).solarKW} kW /{" "}
+              {(location as CommunityMicrogrid).batteryKWh} kWh
+            </dd>
+          </div>
+        )}
+        {location.type === "office" && (
+          <div className="flex gap-2">
+            <dt className="text-text-muted font-mono">Focus</dt>
+            <dd className="text-text-secondary">
+              {(location as OfficeLocation).focus}
+            </dd>
+          </div>
+        )}
+      </dl>
+    </article>
+  );
+}
+
+export function AssetList() {
+  const offices = allLocations.filter((l) => l.type === "office");
+  const projects = allLocations.filter((l) => l.type === "battery-storage");
+  const microgrids = allLocations.filter((l) => l.type === "community-microgrid");
+
+  return (
+    <section aria-label="Asset locations" className="max-w-5xl mx-auto px-6">
+      {/* Stats bar */}
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-10 py-6 border-y border-border">
+        <div className="text-center">
+          <p className="text-2xl font-bold text-text-primary">
+            {stats.totalProjects}
+          </p>
+          <p className="text-xs text-text-muted font-mono uppercase tracking-wider">
+            BESS Projects
+          </p>
+        </div>
+        <div className="text-center">
+          <p className="text-2xl font-bold text-text-primary">
+            {stats.totalCapacityMW}
+          </p>
+          <p className="text-xs text-text-muted font-mono uppercase tracking-wider">
+            Total MW
+          </p>
+        </div>
+        <div className="text-center">
+          <p className="text-2xl font-bold text-text-primary">
+            {stats.totalCapacityMWh.toLocaleString()}
+          </p>
+          <p className="text-xs text-text-muted font-mono uppercase tracking-wider">
+            Total MWh
+          </p>
+        </div>
+        <div className="text-center">
+          <p className="text-2xl font-bold text-text-primary">
+            {stats.baltimoreSites}
+          </p>
+          <p className="text-xs text-text-muted font-mono uppercase tracking-wider">
+            Baltimore Sites
+          </p>
+        </div>
+        <div className="text-center">
+          <p className="text-2xl font-bold text-text-primary">
+            {stats.countries}
+          </p>
+          <p className="text-xs text-text-muted font-mono uppercase tracking-wider">
+            Countries
+          </p>
+        </div>
+      </div>
+
+      {/* Offices */}
+      <div className="mb-8">
+        <h2 className="text-lg font-semibold text-text-primary mb-4">
+          Offices
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {offices.map((loc) => (
+            <LocationCard key={loc.id} location={loc} />
+          ))}
+        </div>
+      </div>
+
+      {/* Battery Projects */}
+      <div className="mb-8">
+        <h2 className="text-lg font-semibold text-text-primary mb-4">
+          Battery Storage Projects
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {projects.map((loc) => (
+            <LocationCard key={loc.id} location={loc} />
+          ))}
+        </div>
+      </div>
+
+      {/* Baltimore Community Microgrids */}
+      <div>
+        <h2 className="text-lg font-semibold text-text-primary mb-2">
+          Baltimore Community Resilience Hubs
+        </h2>
+        <p className="text-sm text-text-secondary mb-4">
+          16-site microgrid network — {stats.baltimoreSolarKW.toLocaleString()} kW solar, {stats.baltimoreBatteryKWh.toLocaleString()} kWh battery
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {microgrids.map((loc) => (
+            <LocationCard key={loc.id} location={loc} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+================================================================================
+FILE: src/components/globe/arc-utils.ts
+================================================================================
+import { latLngToSvg } from "./world-path";
+import type { ArcData } from "@/lib/types";
+
+interface SvgArcSegment {
+  path: string;
+  id: string;
+}
+
+/**
+ * Generate SVG path for an arc between two lat/lng points.
+ * With Pacific-centered projection, Seoul→US arcs are straightforward
+ * (both appear on the same map without wrapping).
+ */
+export function arcToSvgPaths(arc: ArcData): SvgArcSegment[] {
+  const start = latLngToSvg(arc.startLat, arc.startLng);
+  const end = latLngToSvg(arc.endLat, arc.endLng);
+
+  // Quadratic Bezier with control point elevated above the midpoint
+  const midX = (start.x + end.x) / 2;
+  const midY = (start.y + end.y) / 2;
+  // Curve upward — the higher the distance, the bigger the arc
+  const dist = Math.abs(end.x - start.x);
+  const curveHeight = midY - (dist * 0.15);
+
+  return [
+    {
+      id: arc.id,
+      path: `M ${start.x.toFixed(1)} ${start.y.toFixed(1)} Q ${midX.toFixed(1)} ${curveHeight.toFixed(1)} ${end.x.toFixed(1)} ${end.y.toFixed(1)}`,
+    },
+  ];
+}
+
+================================================================================
+FILE: src/lib/types.ts
+================================================================================
+export type LocationType = "office" | "battery-storage" | "community-microgrid";
+export type ProjectStatus = "Operational" | "Under Construction" | "Planned" | "Contracted";
+
+export interface BaseLocation {
+  id: string;
+  name: string;
+  lat: number;
+  lng: number;
+  city: string;
+  state?: string;
+  country: string;
+  type: LocationType;
+  status: ProjectStatus;
+  description: string;
+}
+
+export interface OfficeLocation extends BaseLocation {
+  type: "office";
+  function: string;
+  focus: string;
+}
+
+export interface BatteryProject extends BaseLocation {
+  type: "battery-storage";
+  capacityMWh: number;
+  capacityMW: number;
+  market: string;
+  commissioned?: string;
+}
+
+export interface CommunityMicrogrid extends BaseLocation {
+  type: "community-microgrid";
+  solarKW: number;
+  batteryKWh: number;
+  solarInstallation: string;
+  program: string;
+}
+
+export type GlobeLocation = OfficeLocation | BatteryProject | CommunityMicrogrid;
+
+export interface ArcData {
+  id: string;
+  startLat: number;
+  startLng: number;
+  endLat: number;
+  endLng: number;
+  label: string;
+}
+
+================================================================================
+FILE: src/lib/globe-data.ts
+================================================================================
+import type {
+  OfficeLocation,
+  BatteryProject,
+  CommunityMicrogrid,
+  GlobeLocation,
+  ArcData,
+} from "./types";
+
+export const offices: OfficeLocation[] = [
+  {
+    id: "office-seoul",
+    name: "Seoul R&D Center",
+    lat: 37.5665,
+    lng: 126.978,
+    city: "Seoul",
+    country: "South Korea",
+    type: "office",
+    status: "Operational",
+    function: "R&D",
+    focus: "BESS Design & Prototyping, Systems Development",
+    description:
+      "Core research and development center driving battery energy storage system design, power electronics prototyping, and systems architecture.",
+  },
+  {
+    id: "office-la",
+    name: "Los Angeles Operations",
+    lat: 34.0522,
+    lng: -118.2437,
+    city: "Los Angeles",
+    state: "CA",
+    country: "United States",
+    type: "office",
+    status: "Operational",
+    function: "Operations",
+    focus: "US Deployment, Integration, Field Services",
+    description:
+      "US headquarters managing deployment operations, system integration, and field services across North America.",
+  },
+];
+
+export const batteryProjects: BatteryProject[] = [
+  {
+    id: "bess-desert-ridge",
+    name: "Desert Ridge Storage",
+    lat: 34.6868,
+    lng: -118.1542,
+    city: "Lancaster",
+    state: "CA",
+    country: "United States",
+    type: "battery-storage",
+    status: "Operational",
+    capacityMW: 50,
+    capacityMWh: 200,
+    market: "Commercial & Industrial",
+    commissioned: "2024-Q4",
+    description:
+      "Utility-scale battery storage facility supporting commercial and industrial peak shaving and grid services.",
+  },
+  {
+    id: "bess-bayview",
+    name: "Bayview Community Hub",
+    lat: 37.8044,
+    lng: -122.2712,
+    city: "Oakland",
+    state: "CA",
+    country: "United States",
+    type: "battery-storage",
+    status: "Operational",
+    capacityMW: 5,
+    capacityMWh: 20,
+    market: "Community Resilience",
+    commissioned: "2025-Q1",
+    description:
+      "Community-scale storage hub providing backup power and resilience for underserved neighborhoods.",
+  },
+  {
+    id: "bess-gulf-coast",
+    name: "Gulf Coast Reserve",
+    lat: 29.7604,
+    lng: -95.3698,
+    city: "Houston",
+    state: "TX",
+    country: "United States",
+    type: "battery-storage",
+    status: "Under Construction",
+    capacityMW: 100,
+    capacityMWh: 400,
+    market: "Commercial & Industrial",
+    commissioned: "2026-Q2",
+    description:
+      "Large-scale energy reserve supporting petrochemical corridor reliability and renewable integration.",
+  },
+  {
+    id: "bess-great-plains",
+    name: "Great Plains Wind Storage",
+    lat: 35.222,
+    lng: -101.8313,
+    city: "Amarillo",
+    state: "TX",
+    country: "United States",
+    type: "battery-storage",
+    status: "Planned",
+    capacityMW: 75,
+    capacityMWh: 300,
+    market: "Mobile Power",
+    description:
+      "Wind-paired storage system designed for rapid deployment and replication across the Texas panhandle.",
+  },
+  {
+    id: "bess-peachtree",
+    name: "Peachtree Grid Support",
+    lat: 33.749,
+    lng: -84.388,
+    city: "Atlanta",
+    state: "GA",
+    country: "United States",
+    type: "battery-storage",
+    status: "Operational",
+    capacityMW: 25,
+    capacityMWh: 100,
+    market: "Public Sector",
+    commissioned: "2025-Q2",
+    description:
+      "Municipal grid support system providing frequency regulation and emergency backup for critical public infrastructure.",
+  },
+  {
+    id: "bess-northeast",
+    name: "Northeast Corridor Hub",
+    lat: 40.7357,
+    lng: -74.1724,
+    city: "Newark",
+    state: "NJ",
+    country: "United States",
+    type: "battery-storage",
+    status: "Under Construction",
+    capacityMW: 30,
+    capacityMWh: 120,
+    market: "Food & Grocery",
+    commissioned: "2026-Q1",
+    description:
+      "Cold chain resilience hub ensuring uninterrupted power for food distribution and grocery logistics.",
+  },
+  {
+    id: "bess-pacific-gateway",
+    name: "Pacific Gateway Storage",
+    lat: 21.3069,
+    lng: -157.8583,
+    city: "Honolulu",
+    state: "HI",
+    country: "United States",
+    type: "battery-storage",
+    status: "Planned",
+    capacityMW: 15,
+    capacityMWh: 60,
+    market: "Community Resilience",
+    description:
+      "Island grid storage supporting Hawaii's 100% renewable energy mandate and community resilience goals.",
+  },
+];
+
+// Baltimore Community Resilience Hub Program — 16-site microgrid network
+export const baltimoreSites: CommunityMicrogrid[] = [
+  {
+    id: "balt-pathway",
+    name: "Pathway Church of God",
+    lat: 39.3143,
+    lng: -76.5932,
+    city: "Baltimore",
+    state: "MD",
+    country: "United States",
+    type: "community-microgrid",
+    status: "Contracted",
+    solarKW: 42,
+    batteryKWh: 100,
+    solarInstallation: "Roof",
+    program: "Baltimore Community Resilience Hub",
+    description:
+      "Community resilience hub with rooftop solar and battery storage serving the surrounding neighborhood.",
+  },
+  {
+    id: "balt-breath-of-god",
+    name: "Breath of God",
+    lat: 39.3015,
+    lng: -76.6245,
+    city: "Baltimore",
+    state: "MD",
+    country: "United States",
+    type: "community-microgrid",
+    status: "Contracted",
+    solarKW: 26,
+    batteryKWh: 80,
+    solarInstallation: "Roof",
+    program: "Baltimore Community Resilience Hub",
+    description:
+      "Faith-based community hub providing emergency power and cooling services during grid disruptions.",
+  },
+  {
+    id: "balt-city-of-refuge",
+    name: "City of Refuge Baltimore",
+    lat: 39.2876,
+    lng: -76.6368,
+    city: "Baltimore",
+    state: "MD",
+    country: "United States",
+    type: "community-microgrid",
+    status: "Contracted",
+    solarKW: 110,
+    batteryKWh: 760,
+    solarInstallation: "Roof",
+    program: "Baltimore Community Resilience Hub",
+    description:
+      "Largest site in the Baltimore program with 110 kW solar and 760 kWh battery — anchor hub for west Baltimore resilience.",
+  },
+  {
+    id: "balt-transformation",
+    name: "Transformation Center",
+    lat: 39.3054,
+    lng: -76.5987,
+    city: "Baltimore",
+    state: "MD",
+    country: "United States",
+    type: "community-microgrid",
+    status: "Contracted",
+    solarKW: 55,
+    batteryKWh: 150,
+    solarInstallation: "Roof",
+    program: "Baltimore Community Resilience Hub",
+    description:
+      "Community center providing workforce training and emergency shelter, powered by on-site solar and storage.",
+  },
+  {
+    id: "balt-franciscan",
+    name: "Franciscan Center",
+    lat: 39.2998,
+    lng: -76.6148,
+    city: "Baltimore",
+    state: "MD",
+    country: "United States",
+    type: "community-microgrid",
+    status: "Contracted",
+    solarKW: 43,
+    batteryKWh: 100,
+    solarInstallation: "Roof",
+    program: "Baltimore Community Resilience Hub",
+    description:
+      "Social services hub supporting food distribution and community programs with resilient energy infrastructure.",
+  },
+  {
+    id: "balt-liberty-grace",
+    name: "Liberty Grace",
+    lat: 39.3187,
+    lng: -76.6512,
+    city: "Baltimore",
+    state: "MD",
+    country: "United States",
+    type: "community-microgrid",
+    status: "Contracted",
+    solarKW: 38,
+    batteryKWh: 80,
+    solarInstallation: "Car Port",
+    program: "Baltimore Community Resilience Hub",
+    description:
+      "Solar car port installation providing covered parking and resilient power for community services.",
+  },
+  {
+    id: "balt-manna-house",
+    name: "Manna House",
+    lat: 39.2923,
+    lng: -76.6043,
+    city: "Baltimore",
+    state: "MD",
+    country: "United States",
+    type: "community-microgrid",
+    status: "Contracted",
+    solarKW: 37,
+    batteryKWh: 80,
+    solarInstallation: "Roof",
+    program: "Baltimore Community Resilience Hub",
+    description:
+      "Community food pantry and services center with rooftop solar powering refrigeration and critical loads.",
+  },
+  {
+    id: "balt-miracle-city",
+    name: "Miracle City",
+    lat: 39.2845,
+    lng: -76.6290,
+    city: "Baltimore",
+    state: "MD",
+    country: "United States",
+    type: "community-microgrid",
+    status: "Contracted",
+    solarKW: 110,
+    batteryKWh: 380,
+    solarInstallation: "Roof",
+    program: "Baltimore Community Resilience Hub",
+    description:
+      "Large-scale community hub with substantial solar and storage capacity serving as a neighborhood anchor.",
+  },
+  {
+    id: "balt-mt-sinai",
+    name: "Mt Sinai",
+    lat: 39.3098,
+    lng: -76.6421,
+    city: "Baltimore",
+    state: "MD",
+    country: "United States",
+    type: "community-microgrid",
+    status: "Contracted",
+    solarKW: 97,
+    batteryKWh: 380,
+    solarInstallation: "Car Port",
+    program: "Baltimore Community Resilience Hub",
+    description:
+      "Solar car port deployment providing covered parking, EV charging readiness, and resilient backup power.",
+  },
+  {
+    id: "balt-stillmeadow",
+    name: "Stillmeadow Fellowship",
+    lat: 39.3210,
+    lng: -76.5875,
+    city: "Baltimore",
+    state: "MD",
+    country: "United States",
+    type: "community-microgrid",
+    status: "Contracted",
+    solarKW: 97,
+    batteryKWh: 380,
+    solarInstallation: "Car Port",
+    program: "Baltimore Community Resilience Hub",
+    description:
+      "Car port solar installation with large battery bank supporting emergency shelter operations and community events.",
+  },
+  {
+    id: "balt-the-door",
+    name: "The Door",
+    lat: 39.2967,
+    lng: -76.6178,
+    city: "Baltimore",
+    state: "MD",
+    country: "United States",
+    type: "community-microgrid",
+    status: "Contracted",
+    solarKW: 34,
+    batteryKWh: 80,
+    solarInstallation: "Roof",
+    program: "Baltimore Community Resilience Hub",
+    description:
+      "Youth and community services center with rooftop solar providing clean energy and backup power.",
+  },
+  {
+    id: "balt-the-well",
+    name: "The Well",
+    lat: 39.2890,
+    lng: -76.6085,
+    city: "Baltimore",
+    state: "MD",
+    country: "United States",
+    type: "community-microgrid",
+    status: "Contracted",
+    solarKW: 40,
+    batteryKWh: 100,
+    solarInstallation: "Roof",
+    program: "Baltimore Community Resilience Hub",
+    description:
+      "Community wellness center with solar and battery storage ensuring continuous operations during grid events.",
+  },
+  {
+    id: "balt-cuof",
+    name: "Center for Urban Families",
+    lat: 39.2935,
+    lng: -76.6312,
+    city: "Baltimore",
+    state: "MD",
+    country: "United States",
+    type: "community-microgrid",
+    status: "Contracted",
+    solarKW: 52,
+    batteryKWh: 150,
+    solarInstallation: "Roof",
+    program: "Baltimore Community Resilience Hub",
+    description:
+      "Family services center providing workforce development and community programs with resilient energy.",
+  },
+  {
+    id: "balt-civic-works",
+    name: "Civic Works",
+    lat: 39.3076,
+    lng: -76.5956,
+    city: "Baltimore",
+    state: "MD",
+    country: "United States",
+    type: "community-microgrid",
+    status: "Contracted",
+    solarKW: 100,
+    batteryKWh: 380,
+    solarInstallation: "Car Port",
+    program: "Baltimore Community Resilience Hub",
+    description:
+      "Environmental nonprofit with solar car port supporting green job training and community resilience.",
+  },
+  {
+    id: "balt-harbel",
+    name: "Harbel Community",
+    lat: 39.3165,
+    lng: -76.6089,
+    city: "Baltimore",
+    state: "MD",
+    country: "United States",
+    type: "community-microgrid",
+    status: "Contracted",
+    solarKW: 77,
+    batteryKWh: 150,
+    solarInstallation: "Car Port + Roof",
+    program: "Baltimore Community Resilience Hub",
+    description:
+      "Mixed solar deployment with both car port and rooftop installations serving a large community center.",
+  },
+  {
+    id: "balt-langston-hughes",
+    name: "Langston Hughes",
+    lat: 39.2856,
+    lng: -76.6199,
+    city: "Baltimore",
+    state: "MD",
+    country: "United States",
+    type: "community-microgrid",
+    status: "Contracted",
+    solarKW: 77,
+    batteryKWh: 150,
+    solarInstallation: "Roof",
+    program: "Baltimore Community Resilience Hub",
+    description:
+      "Cultural and community center with rooftop solar supporting arts programming and emergency services.",
+  },
+];
+
+export const allLocations: GlobeLocation[] = [
+  ...offices,
+  ...batteryProjects,
+  ...baltimoreSites,
+];
+
+// Connection arcs
+export const arcs: ArcData[] = [
+  {
+    id: "arc-seoul-la",
+    startLat: 37.5665,
+    startLng: 126.978,
+    endLat: 34.0522,
+    endLng: -118.2437,
+    label: "R&D \u2192 Operations",
+  },
+  {
+    id: "arc-seoul-houston",
+    startLat: 37.5665,
+    startLng: 126.978,
+    endLat: 29.7604,
+    endLng: -95.3698,
+    label: "R&D \u2192 Deployment",
+  },
+  {
+    id: "arc-seoul-baltimore",
+    startLat: 37.5665,
+    startLng: 126.978,
+    endLat: 39.2904,
+    endLng: -76.6122,
+    label: "R&D \u2192 Baltimore Program",
+  },
+];
+
+// Aggregate stats
+export const stats = {
+  totalProjects: batteryProjects.length,
+  totalCapacityMW: batteryProjects.reduce((sum, p) => sum + p.capacityMW, 0),
+  totalCapacityMWh: batteryProjects.reduce((sum, p) => sum + p.capacityMWh, 0),
+  operationalCount: batteryProjects.filter((p) => p.status === "Operational")
+    .length,
+  offices: offices.length,
+  countries: new Set(allLocations.map((l) => l.country)).size,
+  baltimoreSites: baltimoreSites.length,
+  baltimoreSolarKW: baltimoreSites.reduce((sum, s) => sum + s.solarKW, 0),
+  baltimoreBatteryKWh: baltimoreSites.reduce(
+    (sum, s) => sum + s.batteryKWh,
+    0
+  ),
+};
+
+================================================================================
+FILE: src/lib/theme-context.tsx
+================================================================================
+"use client";
+
+import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+
+export type Theme = "site-a" | "site-b";
+
+interface ThemeContextValue {
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
+}
+
+const ThemeContext = createContext<ThemeContextValue | null>(null);
+
+export function ThemeProvider({ children }: { children: ReactNode }) {
+  const [theme, setTheme] = useState<Theme>("site-b");
+
+  // Read saved theme from localStorage on mount
+  useEffect(() => {
+    const stored = localStorage.getItem("dots-theme") as Theme | null;
+    if (stored === "site-a" || stored === "site-b") {
+      setTheme(stored);
+    }
+  }, []);
+
+  // Apply theme to <html> and persist
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    localStorage.setItem("dots-theme", theme);
+  }, [theme]);
+
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
+}
+
+export function useTheme() {
+  const context = useContext(ThemeContext);
+  if (!context) {
+    throw new Error("useTheme must be used within a ThemeProvider");
+  }
+  return context;
+}
+
+================================================================================
+FILE: src/hooks/useReducedMotion.ts
+================================================================================
+"use client";
+
+import { useState, useEffect } from "react";
+
+export function useReducedMotion(): boolean {
+  const [reduced, setReduced] = useState(false);
+
+  useEffect(() => {
+    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduced(mql.matches);
+    const handler = (e: MediaQueryListEvent) => setReduced(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
+
+  return reduced;
+}
+
+================================================================================
+FILE: src/lib/world-path.ts (EXCLUDED)
+================================================================================
+This file is intentionally excluded from the context bundle.
+It contains a massive generated SVG path data string for rendering the world map
+outline on the globe/map components. It is auto-generated and not relevant for
+understanding the application logic.

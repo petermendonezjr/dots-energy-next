@@ -1,26 +1,144 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ============================================
+   SITE A — "Deck/Original" (Dark)
+   ============================================ */
+[data-theme="site-a"] {
+  --bg-primary: #0D0D1A;
+  --bg-secondary: #1A1A2E;
+  --bg-card: #222240;
+  --bg-card-hover: #2A2A50;
+  --text-primary: #F0F0F0;
+  --text-secondary: #A0A0B8;
+  --text-muted: #6B6B80;
+  --accent: #E8751A;
+  --accent-hover: #D06515;
+  --accent-light: rgba(232, 117, 26, 0.15);
+  --accent-subtle: rgba(232, 117, 26, 0.08);
+  --border-color: rgba(232, 117, 26, 0.15);
+  --border-hover: rgba(232, 117, 26, 0.3);
+  --font-heading: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "Inter", system-ui, sans-serif;
+  --globe-atmosphere: #E8751A;
+  --globe-atmosphere-alt: 0.25;
+  --globe-point-color: #E8751A;
+  --globe-arc-color-start: #E8751A;
+  --globe-arc-color-end: #F5A623;
+  --map-land: #2A2A48;
+  --map-border: rgba(232, 117, 26, 0.25);
+  --header-bg: rgba(13, 13, 26, 0.95);
+  --popup-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
+/* ============================================
+   SITE B — "Infrastructure-Grade Minimalism" (Light)
+   ============================================ */
+[data-theme="site-b"] {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #F8FAFC;
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+  --text-muted: #94A3B8;
+  --accent: #C2713A;
+  --accent-hover: #A85E2F;
+  --accent-light: #F4E8DE;
+  --accent-subtle: #FDF6F0;
+  --border-color: #E2E8F0;
+  --border-hover: #CBD5E1;
+  --font-heading: "Inter", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  --globe-atmosphere: #94A3B8;
+  --globe-atmosphere-alt: 0.1;
+  --globe-point-color: #C2713A;
+  --globe-arc-color-start: #C2713A;
+  --globe-arc-color-end: #94A3B8;
+  --map-land: #D5D9DE;
+  --map-border: #B0B8C4;
+  --header-bg: rgba(255, 255, 255, 0.95);
+  --popup-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* ============================================
+   Tailwind Theme Integration
+   ============================================ */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-bg-card: var(--bg-card);
+  --color-bg-card-hover: var(--bg-card-hover);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-light: var(--accent-light);
+  --color-accent-subtle: var(--accent-subtle);
+  --color-border: var(--border-color);
+  --color-border-hover: var(--border-hover);
+  --color-header-bg: var(--header-bg);
+  --font-heading: var(--font-heading);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ============================================
+   Base Styles
+   ============================================ */
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+/* ============================================
+   Map Animations
+   ============================================ */
+
+/* Pulse ring for office/cluster markers */
+.map-pulse {
+  animation: map-pulse 2.5s ease-out infinite;
+  transform-origin: center;
+}
+
+@keyframes map-pulse {
+  0% {
+    opacity: 0.6;
+    r: inherit;
+  }
+  70% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Flowing dash animation for connection arcs */
+.arc-flow {
+  animation: arc-flow 3s linear infinite;
+}
+
+@keyframes arc-flow {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+/* ============================================
+   Reduced Motion
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }
