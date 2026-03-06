@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dots Energy — Interactive Map: Squarespace Embed Guide</title>
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FFFFFF;
+      --bg-alt: #F8FAFC;
+      --text: #0F172A;
+      --text-secondary: #64748B;
+      --text-muted: #94A3B8;
+      --accent: #C2713A;
+      --accent-hover: #A85E2F;
+      --accent-light: #FDF6F0;
+      --border: #E2E8F0;
+      --success: #16A34A;
+      --success-bg: #DCFCE7;
+      --blue: #3B82F6;
+      --blue-bg: #DBEAFE;
+      --warn: #B45309;
+      --warn-bg: #FEF3C7;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.6;
+    }
+
+    @page {
+      size: letter;
+      margin: 0.55in 0.65in;
+    }
+
+    .page {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 36px 32px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--accent);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-dots {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+    .logo-dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .logo-dots span:nth-child(1) { background: #CBD5E1; }
+    .logo-dots span:nth-child(2) { background: #94A3B8; }
+    .logo-dots span:nth-child(3) { background: #C2713A; }
+    .logo-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.02em;
+    }
+    .header-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+    }
+
+    h1 {
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .subtitle {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+
+    /* Section labels */
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+
+    /* Info box */
+    .info-box {
+      background: var(--accent-light);
+      border: 1px solid #E8D4C4;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 18px;
+    }
+    .info-box-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+    .info-box p {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    .info-box strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      background: #FFFFFF;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 1px 5px;
+      color: var(--accent);
+    }
+
+    /* Callout boxes */
+    .callout {
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 18px;
+    }
+    .callout-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 3px;
+    }
+    .callout p {
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .callout-blue { background: var(--blue-bg); border: 1px solid #BFDBFE; }
+    .callout-blue .callout-label { color: var(--blue); }
+    .callout-blue p { color: #1E40AF; }
+    .callout-warn { background: var(--warn-bg); border: 1px solid #FDE68A; }
+    .callout-warn .callout-label { color: var(--warn); }
+    .callout-warn p { color: #92400E; }
+    .callout-green { background: var(--success-bg); border: 1px solid #BBF7D0; }
+    .callout-green .callout-label { color: var(--success); }
+    .callout-green p { color: #166534; }
+
+    /* URL highlight */
+    .url-highlight {
+      display: block;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin: 10px 0 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--accent);
+      word-break: break-all;
+      text-align: center;
+    }
+
+    /* Steps */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .step {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .step-number {
+      flex-shrink: 0;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #FFFFFF;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+    .step-content {
+      flex: 1;
+    }
+    .step-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .step-body {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+    .step-body strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* Code block */
+    .code-block {
+      background: #0F172A;
+      border-radius: 6px;
+      padding: 10px 14px;
+      margin-top: 6px;
+      overflow-x: auto;
+    }
+    .code-block code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #E2E8F0;
+      line-height: 1.55;
+      white-space: pre;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+    .code-block .tag { color: #7DD3FC; }
+    .code-block .attr { color: #FDE68A; }
+    .code-block .val { color: #86EFAC; }
+    .code-block .comment { color: #64748B; }
+
+    /* Customize grid */
+    .customize-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .customize-card {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    .customize-card-title {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .customize-card-body {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Divider */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 18px 0;
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .footer-dots span {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .footer-dots span:nth-child(1) { background: #CBD5E1; }
+    .footer-dots span:nth-child(2) { background: #94A3B8; }
+    .footer-dots span:nth-child(3) { background: #C2713A; }
+    .footer-text {
+      font-size: 10px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .footer-right {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    /* Print */
+    @media print {
+      body { background: #FFFFFF; }
+      .page { padding: 0; max-width: none; }
+      .code-block { background: #0F172A !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .code-block code { background: none !important; border: none !important; }
+      .step-number { background: #C2713A !important; color: #FFFFFF !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .info-box { background: #FDF6F0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .callout-blue { background: #DBEAFE !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .callout-warn { background: #FEF3C7 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .callout-green { background: #DCFCE7 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .customize-card { background: #F8FAFC !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .url-highlight { background: #F8FAFC !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .customize-grid { grid-template-columns: 1fr 1fr !important; }
+      .header { border-bottom-color: #C2713A !important; }
+      .logo-dots span:nth-child(1) { background: #CBD5E1 !important; }
+      .logo-dots span:nth-child(2) { background: #94A3B8 !important; }
+      .logo-dots span:nth-child(3) { background: #C2713A !important; }
+      .footer-dots span:nth-child(1) { background: #CBD5E1 !important; }
+      .footer-dots span:nth-child(2) { background: #94A3B8 !important; }
+      .footer-dots span:nth-child(3) { background: #C2713A !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-left">
+        <div class="logo-dots"><span></span><span></span><span></span></div>
+        <span class="logo-text">Dots Energy</span>
+      </div>
+      <span class="header-label">// EMBED GUIDE</span>
+    </div>
+
+    <!-- Title -->
+    <h1>Adding the Interactive Map to Your Squarespace Site</h1>
+    <p class="subtitle">This guide walks you through embedding the Dots Energy operations map into your Squarespace page. You don't need to publish your Squarespace site yet &mdash; the map will show up in your editor preview. No coding experience needed.</p>
+
+    <!-- What you're working with -->
+    <div class="info-box">
+      <div class="info-box-title">// What is the interactive map?</div>
+      <p>The map is a self-contained web page that shows all Dots Energy operational sites across the US. Visitors can <strong>hover</strong> over markers to see site names and <strong>click</strong> them to see details like capacity, type, and status. It has a color-coded legend (offices, battery storage, microgrids) and works on both desktop and mobile. You can preview it yourself by visiting the URL below.</p>
+    </div>
+
+    <!-- The URL -->
+    <div class="section-label">// The map is already hosted here</div>
+    <p class="subtitle" style="margin-bottom: 4px;">The map is hosted on our GitHub Pages site. This is the live URL &mdash; open it in your browser to see what visitors will see:</p>
+    <div class="url-highlight">https://petermendonezjr.github.io/dots-energy-next/embed/map.html</div>
+
+    <div class="callout callout-blue">
+      <div class="callout-label">// How this works</div>
+      <p>Squarespace doesn't let you upload HTML files directly, so we host the map separately and display it on your page using an <strong>iframe</strong> &mdash; a small snippet that tells Squarespace "load this web page inside my page." The map stays in sync automatically: when the Dots Energy team updates the map, the changes appear on your Squarespace site without you needing to do anything.</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Steps -->
+    <div class="section-label">// Step-by-step: Add the map to your page</div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <div class="step-title">Open your Squarespace page editor</div>
+          <div class="step-body">Log into Squarespace and navigate to the page where you want the map to appear. Click <strong>Edit</strong> (top-left corner) to enter the page editor. Click the <strong>+</strong> icon to add a new content block in the section where the map should go.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <div class="step-title">Add a Code block</div>
+          <div class="step-body">In the block picker, scroll down to the <strong>More</strong> section and select <strong>Code</strong>. This opens a text box where you can paste HTML. At the bottom of the editor, make sure <strong>"Display Source" is turned OFF</strong> &mdash; this tells Squarespace to render the code as a live interactive element, not display it as raw text.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <div class="step-title">Paste this embed code</div>
+          <div class="step-body">Copy the code below and paste it into the Code block. This is the only code you need &mdash; it tells Squarespace to load the map from our server:</div>
+          <div class="code-block"><code><span class="comment">&lt;!-- Dots Energy Interactive Map --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">style</span>=<span class="val">"width:100%; max-width:1200px; margin:0 auto;"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;iframe</span>
+    <span class="attr">src</span>=<span class="val">"https://petermendonezjr.github.io/dots-energy-next/embed/map.html"</span>
+    <span class="attr">width</span>=<span class="val">"100%"</span>
+    <span class="attr">height</span>=<span class="val">"700"</span>
+    <span class="attr">frameborder</span>=<span class="val">"0"</span>
+    <span class="attr">style</span>=<span class="val">"border:none; border-radius:8px;"</span>
+    <span class="attr">loading</span>=<span class="val">"lazy"</span>
+    <span class="attr">title</span>=<span class="val">"Dots Energy Operations Map"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;/iframe&gt;</span>
+<span class="tag">&lt;/div&gt;</span></code></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <div class="step-title">Save and preview</div>
+          <div class="step-body">Click <strong>Save</strong> on the Code block, then <strong>Save</strong> on the page. Use Squarespace's built-in preview to confirm the map loads &mdash; you don't need to publish. Try clicking a site marker to test the popup detail cards. Check the mobile preview too &mdash; the map is fully responsive.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-green">
+      <div class="callout-label">// You're done</div>
+      <p>The map should now appear in your Squarespace editor preview. When you're ready to go live, just publish your Squarespace site as normal &mdash; the map embed will work automatically. When the Dots Energy team adds or updates sites, the changes will appear on your page without any action from you.</p>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Customization -->
+    <div class="section-label">// Optional adjustments</div>
+    <div class="customize-grid">
+      <div class="customize-card">
+        <div class="customize-card-title">Map is too tall or short?</div>
+        <div class="customize-card-body">Change <code>height="700"</code> in the embed code. Try <code>500</code> for a more compact view, or <code>800</code> for a more immersive feel. The width fills automatically.</div>
+      </div>
+      <div class="customize-card">
+        <div class="customize-card-title">Want more spacing?</div>
+        <div class="customize-card-body">In Squarespace, click the section containing the Code block and adjust the top/bottom padding in section settings. 40&ndash;60px per side works well.</div>
+      </div>
+      <div class="customize-card">
+        <div class="customize-card-title">Map not loading?</div>
+        <div class="customize-card-body">Make sure "Display Source" is OFF on the Code block. If the map still doesn't appear, try opening the URL above directly in your browser to confirm it's accessible.</div>
+      </div>
+      <div class="customize-card">
+        <div class="customize-card-title">Need site data changed?</div>
+        <div class="customize-card-body">Contact the Dots Energy dev team. They'll update the map file on the server &mdash; the changes will appear on your Squarespace page automatically, no action needed from you.</div>
+      </div>
+    </div>
+
+    <!-- Color customization -->
+    <div class="section-label">// Changing the map colors</div>
+    <p class="subtitle" style="margin-bottom: 10px;">If you want to adjust the map's colors to match your site's palette, open <code>map.html</code> in any text editor (TextEdit on Mac, Notepad on Windows). Near the top of the file (around line 12), you'll find a section that looks like this:</p>
+
+    <div class="code-block"><code><span class="attr">--color-office</span>: <span class="val">#3B82F6</span>;     <span class="comment">/* blue &mdash; office markers */</span>
+<span class="attr">--color-battery</span>: <span class="val">#F59E0B</span>;    <span class="comment">/* amber &mdash; battery storage markers */</span>
+<span class="attr">--color-microgrid</span>: <span class="val">#10B981</span>;  <span class="comment">/* green &mdash; microgrid markers */</span>
+<span class="attr">--accent</span>: <span class="val">#C2713A</span>;           <span class="comment">/* warm brown &mdash; hover states, legend highlight */</span>
+<span class="attr">--map-land</span>: <span class="val">#D5D9DE</span>;         <span class="comment">/* light gray &mdash; US state fill color */</span>
+<span class="attr">--map-border</span>: <span class="val">#B0B8C4</span>;       <span class="comment">/* medium gray &mdash; state border lines */</span></code></div>
+
+    <p class="subtitle" style="margin-top: 12px; margin-bottom: 10px;">To change a color: replace the hex code (e.g., <code>#3B82F6</code>) with any color you want. You can use a free color picker like <strong>htmlcolorcodes.com</strong> to find hex values. Save the file, then ask the Dots Energy dev team to re-upload it &mdash; the update will go live automatically.</p>
+
+    <div class="callout callout-warn" style="margin-bottom: 20px;">
+      <div class="callout-label">// Keep it simple</div>
+      <p>Only change the hex values (the <strong>#XXXXXX</strong> codes). Don't delete the semicolons, dashes, or variable names. If something looks broken after editing, just undo your changes or ask the dev team for help.</p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-left">
+        <div class="footer-dots"><span></span><span></span><span></span></div>
+        <span class="footer-text">Dots Energy &mdash; Confidential</span>
+      </div>
+      <div class="footer-right">dotsenergy.com</div>
+    </div>
+
+  </div>
+</body>
+</html>
